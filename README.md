@@ -42,14 +42,7 @@ NEXT_PUBLIC_API_URL=http://127.0.0.1:5050/api
 
 For production, the frontend communicates with the deployed Render backend.
 
-## Demo Accounts
 
-```
-Email: daniel@example.com
-Password: Prayer123
-
-Email: sharon@example.com
-Password: Sunrise123
 ```
 
 ## Project Structure
