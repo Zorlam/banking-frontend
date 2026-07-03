@@ -38,7 +38,7 @@ export default function LoginPage() {
         Welcome back
       </h1>
       <p className="mt-2 text-[0.95rem] text-ink-400">
-        Sign in to view your accounts and transfers.
+        Shall we?
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
