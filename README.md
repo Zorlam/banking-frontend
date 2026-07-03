@@ -1,55 +1,127 @@
 # Zenith — Frontend
 
-A Next.js 14 dashboard for the Zenith fintech backend. Black/white/gray, Playfair Display headings, Geist Sans body, Geist Mono for figures.
+A production-deployed Next.js 14 frontend for a banking-style fintech application. The application communicates with a Flask REST API and provides authentication, account management, transfers, airtime purchases, transaction history, and account settings.
+
+## Live Deployment
+
+* **Live Application:** https://keen-pavlova-f4dc6e.netlify.app
+* **Backend API:** https://banking-backend-2mwq.onrender.com
+* **Backend Repository:** https://github.com/Zorlam/banking-backend
+
+## Tech Stack
+
+* Next.js 14 (App Router)
+* TypeScript
+* Tailwind CSS
+* React
+* Local Fonts (Geist Sans & Geist Mono)
+* Playfair Display
+* JWT Authentication
 
 ## Setup
 
 ```bash
 npm install
-cp .env.example .env.local   # then edit if your backend isn't on the default port
+cp .env.example .env.local
 npm run dev
 ```
 
-Runs on **http://localhost:3000**. Requires the Flask backend running (default expected at `http://127.0.0.1:5050/api` — see `fintech-backend/README.md`).
+The application runs locally on:
 
-Demo login: `daniel@example.com` / `Prayer123` (or `sharon@example.com` / `Sunrise123`).
+```text
+http://localhost:3000
+```
 
-## Structure
+The frontend expects the backend API URL to be configured in `.env.local`.
+
+Example:
+
+```env
+NEXT_PUBLIC_API_URL=http://127.0.0.1:5050/api
+```
+
+For production, the frontend communicates with the deployed Render backend.
+
+## Demo Accounts
+
+```
+Email: daniel@example.com
+Password: Prayer123
+
+Email: sharon@example.com
+Password: Sunrise123
+```
+
+## Project Structure
 
 ```
 src/
-  app/                 routes (App Router)
-    login/, register/  auth pages, shared two-pane layout
-    dashboard/          balance hero, quick actions, recent activity
-    transfer/           bank transfer + airtime, tabbed
-    history/            filterable, paginated transaction list
-    settings/           profile + password change
-    fonts/              self-hosted Geist (woff2) — see note below
+  app/
+    login/
+    register/
+    dashboard/
+    transfer/
+    history/
+    settings/
+    fonts/
   components/
-    ui/                 Button, Input, Card, Modal, Toast — no component library
-    receipt-modal.tsx   post-transaction confirmation ("ledger stamp")
-    deposit-modal.tsx   quick top-up
-    sidebar.tsx          desktop sidebar / mobile bottom tabs
-    app-shell.tsx        layout wrapper + auth gate
-  hooks/use-auth.tsx     session state, login/register/logout
+    ui/
+    receipt-modal.tsx
+    deposit-modal.tsx
+    sidebar.tsx
+    app-shell.tsx
+  hooks/
+    use-auth.tsx
   lib/
-    api.ts               fetch wrapper, token storage, auto-refresh on 401
-    format.ts             Naira formatting, kobo splitting, date helpers
-    transaction-meta.ts  icon/label/sign per transaction type
-  types/                  shapes matching the backend API responses
+    api.ts
+    format.ts
+    transaction-meta.ts
+  types/
 ```
 
-## Design notes
+## Features
 
-- **Geist Sans/Mono are self-hosted** via `next/font/local` (`src/app/fonts/`), not `next/font/google`. The brief asked for Geist as a Google Font, but Geist isn't in Next.js 14.2's bundled Google Fonts list — Vercel distributes it separately. The two `.woff2` files here are the official MIT-licensed Vercel build.
-- **Playfair Display** uses `next/font/google` normally, fetched at build time. This requires network access to `fonts.googleapis.com` — if your build environment blocks that domain, swap to `next/font/local` with a downloaded copy, the same way Geist is handled.
-- **Money display**: every amount renders with the whole-Naira figure in Playfair Display and the kobo in monospace, at a visibly smaller scale — never rounded away, always present. This mirrors the backend storing money as integer minor units rather than floats.
-- **Receipt modal**: after a transfer or airtime purchase, a stamp-style confirmation animates in with a dashed-border itemization (reference, recipient, balance after) — meant to evoke a stamped ledger entry rather than a generic toast.
+* User registration and login
+* JWT authentication
+* Automatic access token refresh
+* Dashboard with account overview
+* Money transfers
+* Airtime purchases
+* Deposit and withdrawal operations
+* Transaction history with pagination
+* Password change
+* Responsive layout for desktop and mobile devices
+* Custom reusable UI components
+* Receipt modal for completed transactions
+* Currency formatting using Naira and Kobo
 
-## Connecting to a different backend
+## Design Notes
 
-Edit `NEXT_PUBLIC_API_URL` in `.env.local`. The API client (`src/lib/api.ts`) reads this once at build/runtime; no other code needs to change.
+* Geist Sans and Geist Mono are self-hosted using `next/font/local`.
+* Playfair Display is loaded using `next/font/google`.
+* Monetary values display both Naira and Kobo to match the backend's integer-based money storage.
+* Transaction receipts use a ledger-inspired confirmation modal rather than a standard notification.
 
-## What's not included
+## Backend Configuration
 
-This is a frontend for a demo/skeleton backend, not a production banking app. No automated tests, no E2E suite, no analytics, no real KYC/compliance flows. See the backend README for the corresponding backend caveats.
+The API endpoint is configured through:
+
+```env
+NEXT_PUBLIC_API_URL=
+```
+
+No code changes are required when switching between local development and production—only the environment variable needs to be updated.
+
+## Known Limitations
+
+This project is intended as a portfolio and learning project.
+
+Current limitations include:
+
+* No automated tests
+* No end-to-end testing
+* No offline support
+* No real banking integrations
+* No KYC or regulatory compliance workflows
+
+See the backend repository for API implementation details and backend-specific limitations.
